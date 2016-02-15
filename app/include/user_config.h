@@ -24,6 +24,8 @@
 
 //#define USE_CPU_SPEED  160 // 80
 
+extern void ets_printf(char*, ...);
+
 #endif // _user_config_h_
 
 

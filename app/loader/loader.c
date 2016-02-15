@@ -13,8 +13,9 @@
 //-----------------------------------------------------------------------------
 #define FQSPI 80 // 80 or 40 MHz
 //extern void loader_flash_boot(struct SPIFlashHeader *);
-#define loader_flash_boot_addr 	0x40200080
-#define next_flash_header_addr 	0x402000c0
+#define loader_size 			176								// file size of 0x00000.bin
+#define loader_flash_boot_addr 	(0x40200000 + loader_size)
+#define next_flash_header_addr 	(loader_flash_boot_addr + 64)	// +file size of addld.bin
 
 #define GPIO0_MUX_alt		rtc_[64+13] // для уменьшения размера кода
 #define GPIO_MUX_CFG_alt	rtc_[64] 	// для уменьшения размера кода
@@ -42,6 +43,9 @@ void __attribute__ ((noreturn)) call_user_start(void)
 #endif
 		// Всё, включаем кеширование, далее можно вызывать процедуры из flash
 		Cache_Read_Enable(0, 0, 0);
+
+		ets_printf("\nRapid loader!!!!!!!\r\n");
+
 		// Переход в область кеширования flash,
 		// Запускаем загрузку SDK с указателем на заголовок SPIFlashHeader (находится за данным загручиком по адресу с align 16)
 //		((loader_call)((uint32)(&loader_flash_boot) + FLASH_BASE - IRAM_BASE + 0x10))((struct SPIFlashHeader *)(((uint32)(&_text_end) + FLASH_BASE - IRAM_BASE + 0x17) & (~15)));
