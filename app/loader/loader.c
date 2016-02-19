@@ -16,9 +16,8 @@
 // define
 //-----------------------------------------------------------------------------
 #define FQSPI 80 // 80 or 40 MHz
-//extern void loader_flash_boot(struct SPIFlashHeader *);
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#define loader_size 			480			// <- file size: 0x00000.bin
+#define loader_size 			304			// <- file size: 0x00000.bin
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #define loader_flash_boot_addr 	(0x40200000 + loader_size)
 #define next_flash_header_addr 	(loader_flash_boot_addr + 64)	// +file size: addld.bin
@@ -96,8 +95,4 @@ void __attribute__ ((noreturn)) call_user_start(void)
 //		((loader_call)((uint32)(&loader_flash_boot) + FLASH_BASE - IRAM_BASE + 0x10))((struct SPIFlashHeader *)(((uint32)(&_text_end) + FLASH_BASE - IRAM_BASE + 0x17) & (~15)));
 		((loader_call)(loader_flash_boot_addr))((struct SPIFlashHeader *)(next_flash_header_addr));
 }
-//=============================================================================
-// контрольня сумма отображает версию и частоту
-// Checksum: 43 -> 40 MHz Ver3
-// Checksum: 83 -> 80 MHz Ver3
-// Cтавить в ручную в бинарнике :)
+

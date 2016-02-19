@@ -1,6 +1,8 @@
 #ifndef _user_config_h_
 #define _user_config_h_
 
+#define DEBUGSOO	0  // 0 - откл вывода, 1 - минимум, 2 - норма
+
 #ifndef ICACHE_FLASH
 	#define ICACHE_FLASH
 #endif
@@ -19,9 +21,8 @@
 
 #define USE_MAX_IRAM // использовать часть cache под IRAM, IRAM size = 49152 байт
 
-#define DEBUGSOO	2  // 0 - откл вывода, 1 - минимум, 2 - норма, >3 - текушая отладка, >4 - удалить что найдется :)
-
 //#define USE_CPU_SPEED  160 // 80
+//extern void loader_flash_boot(struct SPIFlashHeader *);
 
 #define MAX_SYS_CONST_BLOCK 	0x400 // for write some info for bootloader
 #define SPI_FLASH_SEC_SIZE      4096
@@ -38,9 +39,9 @@
 void _ResetVector(void);
 void ets_delay_us(uint32 us);
 extern void ets_printf(char*, ...);
+#define PROGMEM_ATTR __attribute__((aligned(4),section(".text")))
 #define p_printf(...) ets_printf(__VA_ARGS__);
-/*#define PROGMEM_ATTR __attribute__((aligned(4),section(".text")))
-#define p_printf(s, ...) do { \
+/*#define p_printf(s, ...) do { \
 		static const char ss[] PROGMEM_ATTR = s; \
 		ets_printf((char *)ss, ##__VA_ARGS__); \
 		} while(0) */
