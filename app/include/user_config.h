@@ -27,10 +27,14 @@
 #define MAX_SYS_CONST_BLOCK 	0x400 // for write some info for bootloader
 #define SPI_FLASH_SEC_SIZE      4096
 
-#define USE_FIX_SDK_FLASH_SIZE	1	// 512k flash size for SDK
+//#define USE_FIX_SDK_FLASH_SIZE		1	// 512k flash size for SDK
+#define USE_FIX_SDK_FLASH_SIZE			2	// 1024k flash size for SDK
 #if USE_FIX_SDK_FLASH_SIZE == 1
 	#define esp_init_data_default_sec (0x7C)
 	#define esp_init_data_default_addr (0x7C000)
+#elif USE_FIX_SDK_FLASH_SIZE == 2
+	#define esp_init_data_default_sec (0xFC)
+	#define esp_init_data_default_addr (0xFC000)
 #else
 	#define esp_init_data_default_sec (flashchip->chip_size - 4)
 	#define esp_init_data_default_addr (flashchip->chip_size - 4 * SPI_FLASH_SEC_SIZE)
