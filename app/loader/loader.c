@@ -70,10 +70,12 @@ void __attribute__ ((noreturn)) call_user_start(void)
 				p_printf("Update firmware from 0x%x, %u sectors: ", image_start, sectors);
 #endif
 				ets_delay_us(1000000); // 1 sec
+				uint32 write_to = 0;
 				for(uint32 i = 0; i < sectors; i++) {
 					SPIRead(image_start + i * SPI_FLASH_SEC_SIZE, buffer, SPI_FLASH_SEC_SIZE);
 					SPIEraseSector(i);
-					SPIWrite(i * SPI_FLASH_SEC_SIZE, buffer, SPI_FLASH_SEC_SIZE);
+					SPIWrite(write_to, buffer, SPI_FLASH_SEC_SIZE);
+					write_to += SPI_FLASH_SEC_SIZE;
 #if DEBUGSOO > 0
 					p_printf("x");
 #endif
@@ -81,7 +83,7 @@ void __attribute__ ((noreturn)) call_user_start(void)
 #if DEBUGSOO > 0
 				p_printf("\nOk.");
 #endif
-				SPIEraseSector(image_start / SPI_FLASH_SEC_SIZE);
+				if(image_start >= write_to) SPIEraseSector(image_start / SPI_FLASH_SEC_SIZE);
 				_ResetVector();
 			}
 		}
